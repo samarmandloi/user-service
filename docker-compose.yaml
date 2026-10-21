@@ -1,0 +1,16 @@
+services:
+  user-postgres:
+    image: postgres:18
+    container_name: user-postgres
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: ${POSTGRES_USER:-samar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-samar}
+    ports:
+      - "5436:5432"
+    volumes:
+      - user_postgres_data:/var/lib/postgresql
+    restart: unless-stopped
+
+volumes:
+  user_postgres_data:
