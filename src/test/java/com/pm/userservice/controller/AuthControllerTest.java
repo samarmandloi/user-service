@@ -17,6 +17,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
+import com.pm.userservice.service.UserService;
 
 import java.util.Optional;
 
@@ -47,6 +48,9 @@ class AuthControllerTest {
 
     @MockitoBean
     private JwtDecoder jwtDecoder;
+
+    @MockitoBean
+    private UserService userService;
 
     @Test
     void generateTokenShouldReturn200ForValidCredentials() throws Exception {
