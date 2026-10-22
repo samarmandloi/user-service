@@ -3,6 +3,7 @@ package com.pm.userservice.controller;
 import com.pm.userservice.config.PasswordConfig;
 import com.pm.userservice.config.SecurityConfig;
 import com.pm.userservice.dto.requestDto.TokenRequest;
+import com.pm.userservice.entity.Role;
 import com.pm.userservice.entity.User;
 import com.pm.userservice.repository.UserRepository;
 import com.pm.userservice.service.JwtTokenService;
@@ -64,23 +65,26 @@ class AuthControllerTest {
         when(user.getPassword())
                 .thenReturn(passwordEncoder.encode("Password123"));
         when(user.getEnabled()).thenReturn(true);
+        when(user.getRole()).thenReturn(Role.USER);
 
         when(jwtTokenService.generateToken(
-                eq("samar@example.com"), eq(300L)))
-                .thenReturn("test-jwt-token");
+                eq("samar@example.com"),
+                eq("USER"),
+                eq(300L)))
+                .thenReturn("mock-jwt-token");
 
         mockMvc.perform(post("/auth/token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken")
-                        .value("test-jwt-token"))
+                        .value("mock-jwt-token"))
                 .andExpect(jsonPath("$.tokenType").value("Bearer"))
                 .andExpect(jsonPath("$.expiresIn").value(300));
 
         verify(userRepository).findByEmail("samar@example.com");
         verify(jwtTokenService)
-                .generateToken("samar@example.com", 300L);
+                .generateToken("samar@example.com", "USER", 300L);
     }
 
     @Test

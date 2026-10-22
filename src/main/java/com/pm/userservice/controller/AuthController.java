@@ -73,6 +73,7 @@ public class AuthController {
 
         String accessToken = jwtTokenService.generateToken(
                 email,
+                user.getRole().name(),
                 expirationSeconds
         );
 

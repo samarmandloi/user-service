@@ -21,12 +21,13 @@ public class JwtTokenService {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateToken(String email, long expirationSeconds) {
+    public String generateToken(String email, String role, long expirationSeconds) {
         Instant now = Instant.now();
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(ISSUER)
                 .subject(email)
+                .claim("role", role)
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expirationSeconds))
                 .build();
